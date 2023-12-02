@@ -32,9 +32,44 @@ fn part1(file_data: &str) {
         .iter()
         .sum();
 
-    println!("Total:{}", res);
+    println!("part1 result: {}", res);
 }
 
 fn part2(file_data: &str) {
-    println!("part2: {}", file_data);
+    let mut res = 0;
+    for line in file_data.lines() {
+        let nums = extract_numbers(line);
+        res += nums[0] * 10 + nums[1];
+    }
+
+    println!("part2 result: {}", res);
+}
+
+const NUMBERS: [&str; 9] = [
+    "one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
+];
+
+fn extract_numbers(n: &str) -> [u32; 2] {
+    let mut first = None;
+    let mut last = 0;
+
+    let mut digit = |c| {
+        first = first.or(Some(c));
+        last = c;
+    };
+
+    let chars = n.as_bytes();
+    for (i, c) in chars.iter().enumerate() {
+        if c.is_ascii_digit() {
+            digit((c - b'0') as u32);
+        } else {
+            for (j, d) in NUMBERS.iter().enumerate() {
+                if chars[i..].starts_with(d.as_bytes()) {
+                    digit(j as u32 + 1);
+                }
+            }
+        }
+    }
+
+    [first.unwrap(), last]
 }
