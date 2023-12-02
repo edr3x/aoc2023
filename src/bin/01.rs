@@ -8,9 +8,8 @@ fn main() {
 
 fn part1(file_data: &str) {
     let data = file_data
-        .split('\n')
-        .filter(|x| !x.is_empty())
-        .collect::<Vec<_>>()
+        .lines()
+        .collect::<Vec<&str>>()
         .iter()
         .map(|&x| {
             x.chars()
