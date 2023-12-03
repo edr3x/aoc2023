@@ -61,7 +61,48 @@ fn part1(file_data: &str) -> i32 {
 }
 
 fn part2(file_data: &str) -> i32 {
-    2286
+    let mut pow: Vec<i32> = Vec::new();
+
+    for l in file_data.lines() {
+        let mut max_red = 0;
+        let mut max_blue = 0;
+        let mut max_green = 0;
+
+        l.trim().split(": ").collect::<Vec<&str>>()[1]
+            .split("; ")
+            .collect::<Vec<&str>>()
+            .iter()
+            .for_each(|d| {
+                d.split(", ").for_each(|c| {
+                    let color = c.split_whitespace().collect::<Vec<&str>>()[1];
+
+                    let num = c.split_whitespace().collect::<Vec<&str>>()[0]
+                        .parse::<i32>()
+                        .unwrap();
+
+                    match color {
+                        "red" => {
+                            if num > max_red {
+                                max_red = num;
+                            }
+                        }
+                        "blue" => {
+                            if num > max_blue {
+                                max_blue = num;
+                            }
+                        }
+                        "green" => {
+                            if num > max_green {
+                                max_green = num;
+                            }
+                        }
+                        _ => {}
+                    }
+                })
+            });
+        pow.push(max_red * max_blue * max_green)
+    }
+    pow.iter().sum()
 }
 
 #[cfg(test)]
